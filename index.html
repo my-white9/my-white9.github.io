@@ -210,6 +210,75 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/index.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/1122.jpg">
+      <meta itemprop="name" content="white">
+      <meta itemprop="description" content="blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="白de小站">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/index.html" class="post-title-link" itemprop="url">未命名</a>
+        </h2>
+
+        <div class="post-meta">
+        
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-10-19 21:17:46 / 修改时间：21:12:44" itemprop="dateCreated datePublished" datetime="2020-10-19T21:17:46+08:00">2020-10-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="脚本"><a href="#脚本" class="headerlink" title="脚本"></a>脚本</h1><h2 id="if篇"><a href="#if篇" class="headerlink" title="if篇"></a>if篇</h2><h2 id="判断两主机是否接通"><a href="#判断两主机是否接通" class="headerlink" title="判断两主机是否接通"></a>判断两主机是否接通</h2><p>先使用ping -c次数 判断是否可以ping通<br>使用$?条件判断编写脚本<br>判断当前主机和远程主机是否接通</p>
+<pre><code>#!/bin/env bash
+read -p ip
+ping -c1 $ip &amp;&gt;/dev/null
+if [ $? -ef 0 ] ;then
+echo &quot;ping connect&quot;
+else
+echo &quot;ping defect&quot;
+fi</code></pre>
+<h2 id="判断一个进程是否存在"><a href="#判断一个进程是否存在" class="headerlink" title="判断一个进程是否存在"></a>判断一个进程是否存在</h2><p>先使用 ps auxf |grep httpd查看httpd是否存在<br>再利用 if逻辑语句进行输出<br>    #!/bin/env bash<br>    pgrep httpd &amp;&gt; /dev/null<br>    if [ $? -eq 0 ]; then<br>       echo “httpd excited”<br>    else<br>       echo “httpd not excited”<br>    fi</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/hello-world/index.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -345,7 +414,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
