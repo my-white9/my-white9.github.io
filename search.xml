@@ -331,8 +331,8 @@ done</code></pre>
       </categories>
   </entry>
   <entry>
-    <title>分类</title>
-    <url>/%E5%88%86%E7%B1%BB/index.html</url>
+    <title>基础知识</title>
+    <url>/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html</url>
     <content><![CDATA[<h1 id="课程目标："><a href="#课程目标：" class="headerlink" title="课程目标："></a>课程目标：</h1><p>熟练使用shell变量语句<br>能够编写简单的系统工具脚本<br>熟练使用awk，grep，find<br>shell介绍：<br>1.shell是解释型语言：效率低每使用一次都要进行翻译 使用解释器/bin/sh /bin/bash<br>2.sh是链接到bash无区别<br>3.对兼容性有要求会一般使用解释型语言</p>
 <h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>shell是人机交互的一个桥梁，负责将计算机用户的输入进行翻译来控制linux内核</p>
 <h1 id="shell的种类："><a href="#shell的种类：" class="headerlink" title="shell的种类："></a>shell的种类：</h1><pre><code>[root@MissHou ~]# cat /etc/shells 
