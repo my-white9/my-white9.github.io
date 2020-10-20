@@ -210,7 +210,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/index.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/1122.jpg">
@@ -224,7 +224,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/index.html" class="post-title-link" itemprop="url">未命名</a>
+            <a href="/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html" class="post-title-link" itemprop="url">正则表达式+文件处理</a>
         </h2>
 
         <div class="post-meta">
@@ -236,150 +236,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-10-20 23:08:20 / 修改时间：23:06:56" itemprop="dateCreated datePublished" datetime="2020-10-20T23:08:20+08:00">2020-10-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>if语句</p>
-<h2 id="判断一个服务是否正常"><a href="#判断一个服务是否正常" class="headerlink" title="判断一个服务是否正常"></a>判断一个服务是否正常</h2><p>#!/bin/env bash<br>    read -p service service<br>    systemctl status $service |grep running &amp;&gt; /dev/null<br>    if [ $? -eq 0 ];then<br>        echo “$service excited”<br>    else<br>        echo “$service not excited”<br>    fi</p>
-<h2 id="判断用户是否存在"><a href="#判断用户是否存在" class="headerlink" title="判断用户是否存在"></a>判断用户是否存在</h2><pre><code>#!/bin/env bash
-#Name: user excited
-
-read -p &quot;user:&quot; user
-id $user &amp;&gt; /dev/null
-if [ $? -eq 0 ] ;then
-    echo &quot;$user has excited&quot;
-else
-    echo &quot;$user not excited&quot;
-fi</code></pre>
-<h2 id="判断软件包是否安装"><a href="#判断软件包是否安装" class="headerlink" title="判断软件包是否安装"></a>判断软件包是否安装</h2><pre><code>#!/bin/env bash
-#Name: user excited
-
-read -p &quot;rpm&quot; rpm
-rpm -qa |grep $rpm  &amp;&gt; /dev/null
-if [ $? -eq 0 ] ;then
-    echo &quot;$rpm has excited&quot;
-else
-    echo &quot;$rpm not excited&quot;
-fi</code></pre>
-<h2 id="判断当前主机的内核版本"><a href="#判断当前主机的内核版本" class="headerlink" title="判断当前主机的内核版本"></a>判断当前主机的内核版本</h2><pre><code>#!/bin/env bash
-number=$(uname -r)
-version1=$&#123;number:0:1&#125;
-version2=$&#123;number:2:1&#125;
-if [ $version1 -eq 2 -a $version2 -ge 6 ] ;then
-    echo &quot;$number&quot;
-else
-    echo &quot;no&quot;
-fi</code></pre>
-<h2 id="批量创建用户"><a href="#批量创建用户" class="headerlink" title="批量创建用户"></a>批量创建用户</h2><p>需求：批量加5个新用户，以u1到u5命名，并统一加一个新组，组名为class,统一改密码为123</p>
-<pre><code>#!/bin/env bash
-Name: create user
-grep -w ^class /etc/group &amp;&gt;/dev/null
-test $? -ne 0 &amp;&amp; groupadd class
-for ((i=1;i&lt;=5;i++))
-do
-    useradd -G class u$i
-    echo 123 |passwd --stdin u$i
-done</code></pre>
-<p>~        </p>
-<h2 id="批量创建用户-1"><a href="#批量创建用户-1" class="headerlink" title="批量创建用户"></a>批量创建用户</h2><p>需求1:批量新建5个用户stu1~stu5，要求这几个用户的家目录都在/rhome.<br>    #!/bin/env bash<br>    for x in {1..5};<br>    do<br>        mkdir -p /rhome/stu$x<br>        usermod  -d /rhome/stu$x stu$x<br>    done</p>
-<h2 id="局域网内脚本检查主机网络通讯"><a href="#局域网内脚本检查主机网络通讯" class="headerlink" title="局域网内脚本检查主机网络通讯"></a>局域网内脚本检查主机网络通讯</h2><p>需求2：</p>
-<p>写一个脚本，局域网内，把能ping通的IP和不能ping通的IP分类，并保存到两个文本文件里</p>
-<p>以10.1.1.1~10.1.1.10为例</p>
-<pre><code>#!/bin/env bash
-for ip in &#123;1..10&#125;
-do
-    ip=192.168.0.$ip
-    ping -c1 $ip &amp;&gt;/dev/null
-if [ $? -eq 0 ] ;then
-    echo &quot;$ip&quot; &gt;&gt;  /ip.txt
-else
-       echo &quot;$ip&quot; &gt;&gt; /ip1.txt
-fi
-done</code></pre>
-<h2 id="延伸扩展：shell脚本并发"><a href="#延伸扩展：shell脚本并发" class="headerlink" title="延伸扩展：shell脚本并发"></a>延伸扩展：shell脚本并发</h2><h2 id="脚本同步系统时间"><a href="#脚本同步系统时间" class="headerlink" title="脚本同步系统时间"></a>脚本同步系统时间</h2><p>① 具体需求<br>写一个脚本，30秒同步一次系统时间，时间同步服务器192.168.0.139<br>如果同步失败，则进行邮件报警,每次失败都报警<br>如果同步成功,也进行邮件通知,但是成功100次才通知一次</p>
-<blockquote>
-<p>1.死循环<br>2.同步命令 ntpdate 192.168.0.1<br>3.同步成功计数，条件到达100报警<br>#!/bin/env bash<br>    i=0<br>    while true<br>    do<br>    ntpdate 114.118.7.161 &amp;&gt;/dev/null<br>    if [ $? -eq 0 ] ;then<br>        let i++<br>        if [ $i -eq 100 ];then<br>            echo “system date success”| mail -s “success” root@localhost<br>            let i=0<br>    else<br>            echo “system date false”|mail -s “false” root@localhost<br>            echo “count:”$i<br>        fi<br>    fi<br>    sleep 3<br>    done</p>
-</blockquote>
-<h2 id="应用案例"><a href="#应用案例" class="headerlink" title="应用案例"></a>应用案例</h2><p>㈠ 具体需求 ##<br>使用until语句批量创建10个用户，要求stu1—stu5用户的UID分别为1001—1005；<br>stu6~stu10用户的家目录分别在/rhome/stu6—/rhome/stu10</p>
-<p>创建10个用户条件为真推出</p>
-<pre><code>#!/bin/env bash
-ls /rhome &amp;&gt;/dev/null
-if [ $? -ne  0 ];then
-    mkdir /rhome
-else
-    echo &#39;excited&#39;
-fi
-count=0
-until [ $count -gt 10 ]
-do
-    for x in &#123;1..10&#125;
-    do
-        if [ $x -ge 6 ];then
-            let count++
-               useradd -d /rhome/stu$x stu$x
-        else
-            let count++
-            useradd -u 100$x stu$x
-        fi
-    done
-done</code></pre>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/%E5%88%86%E7%B1%BB/index.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/1122.jpg">
-      <meta itemprop="name" content="white">
-      <meta itemprop="description" content="blog">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="白de小站">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/%E5%88%86%E7%B1%BB/index.html" class="post-title-link" itemprop="url">分类</a>
-        </h2>
-
-        <div class="post-meta">
-        
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-10-20 23:07:49 / 修改时间：23:08:06" itemprop="dateCreated datePublished" datetime="2020-10-20T23:07:49+08:00">2020-10-20</time>
+              <time title="创建时间：2020-10-20 23:07:49 / 修改时间：23:12:26" itemprop="dateCreated datePublished" datetime="2020-10-20T23:07:49+08:00">2020-10-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -651,7 +508,7 @@ x\&#123;m,n\&#125;  # 重复字符x，至少m次，不多于n次，如：&#39;o\
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/hello-world/index.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/%E8%AF%AD%E5%8F%A5%E8%84%9A%E6%9C%AC%E5%AE%9E%E6%88%98/index.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/1122.jpg">
@@ -665,7 +522,7 @@ x\&#123;m,n\&#125;  # 重复字符x，至少m次，不多于n次，如：&#39;o\
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/hello-world/index.html" class="post-title-link" itemprop="url">Hello World</a>
+            <a href="/%E8%AF%AD%E5%8F%A5%E8%84%9A%E6%9C%AC%E5%AE%9E%E6%88%98/index.html" class="post-title-link" itemprop="url">语句脚本实战</a>
         </h2>
 
         <div class="post-meta">
@@ -675,8 +532,18 @@ x\&#123;m,n\&#125;  # 重复字符x，至少m次，不多于n次，如：&#39;o\
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-08-06 13:11:13" itemprop="dateCreated datePublished" datetime="2020-08-06T13:11:13+08:00">2020-08-06</time>
+              <time title="创建时间：2020-10-20 23:07:49 / 修改时间：23:12:47" itemprop="dateCreated datePublished" datetime="2020-10-20T23:07:49+08:00">2020-10-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/shell%E8%AF%AD%E5%8F%A5%E5%9F%BA%E7%A1%80%E7%AF%87/" itemprop="url" rel="index"><span itemprop="name">shell语句基础篇</span></a>
+                </span>
             </span>
 
           
@@ -690,19 +557,90 @@ x\&#123;m,n\&#125;  # 重复字符x，至少m次，不多于n次，如：&#39;o\
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+          <p>if语句</p>
+<h2 id="判断一个服务是否正常"><a href="#判断一个服务是否正常" class="headerlink" title="判断一个服务是否正常"></a>判断一个服务是否正常</h2><p>#!/bin/env bash<br>    read -p service service<br>    systemctl status $service |grep running &amp;&gt; /dev/null<br>    if [ $? -eq 0 ];then<br>        echo “$service excited”<br>    else<br>        echo “$service not excited”<br>    fi</p>
+<h2 id="判断用户是否存在"><a href="#判断用户是否存在" class="headerlink" title="判断用户是否存在"></a>判断用户是否存在</h2><pre><code>#!/bin/env bash
+#Name: user excited
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+read -p &quot;user:&quot; user
+id $user &amp;&gt; /dev/null
+if [ $? -eq 0 ] ;then
+    echo &quot;$user has excited&quot;
+else
+    echo &quot;$user not excited&quot;
+fi</code></pre>
+<h2 id="判断软件包是否安装"><a href="#判断软件包是否安装" class="headerlink" title="判断软件包是否安装"></a>判断软件包是否安装</h2><pre><code>#!/bin/env bash
+#Name: user excited
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+read -p &quot;rpm&quot; rpm
+rpm -qa |grep $rpm  &amp;&gt; /dev/null
+if [ $? -eq 0 ] ;then
+    echo &quot;$rpm has excited&quot;
+else
+    echo &quot;$rpm not excited&quot;
+fi</code></pre>
+<h2 id="判断当前主机的内核版本"><a href="#判断当前主机的内核版本" class="headerlink" title="判断当前主机的内核版本"></a>判断当前主机的内核版本</h2><pre><code>#!/bin/env bash
+number=$(uname -r)
+version1=$&#123;number:0:1&#125;
+version2=$&#123;number:2:1&#125;
+if [ $version1 -eq 2 -a $version2 -ge 6 ] ;then
+    echo &quot;$number&quot;
+else
+    echo &quot;no&quot;
+fi</code></pre>
+<h2 id="批量创建用户"><a href="#批量创建用户" class="headerlink" title="批量创建用户"></a>批量创建用户</h2><p>需求：批量加5个新用户，以u1到u5命名，并统一加一个新组，组名为class,统一改密码为123</p>
+<pre><code>#!/bin/env bash
+Name: create user
+grep -w ^class /etc/group &amp;&gt;/dev/null
+test $? -ne 0 &amp;&amp; groupadd class
+for ((i=1;i&lt;=5;i++))
+do
+    useradd -G class u$i
+    echo 123 |passwd --stdin u$i
+done</code></pre>
+<p>~        </p>
+<h2 id="批量创建用户-1"><a href="#批量创建用户-1" class="headerlink" title="批量创建用户"></a>批量创建用户</h2><p>需求1:批量新建5个用户stu1~stu5，要求这几个用户的家目录都在/rhome.<br>    #!/bin/env bash<br>    for x in {1..5};<br>    do<br>        mkdir -p /rhome/stu$x<br>        usermod  -d /rhome/stu$x stu$x<br>    done</p>
+<h2 id="局域网内脚本检查主机网络通讯"><a href="#局域网内脚本检查主机网络通讯" class="headerlink" title="局域网内脚本检查主机网络通讯"></a>局域网内脚本检查主机网络通讯</h2><p>需求2：</p>
+<p>写一个脚本，局域网内，把能ping通的IP和不能ping通的IP分类，并保存到两个文本文件里</p>
+<p>以10.1.1.1~10.1.1.10为例</p>
+<pre><code>#!/bin/env bash
+for ip in &#123;1..10&#125;
+do
+    ip=192.168.0.$ip
+    ping -c1 $ip &amp;&gt;/dev/null
+if [ $? -eq 0 ] ;then
+    echo &quot;$ip&quot; &gt;&gt;  /ip.txt
+else
+       echo &quot;$ip&quot; &gt;&gt; /ip1.txt
+fi
+done</code></pre>
+<h2 id="延伸扩展：shell脚本并发"><a href="#延伸扩展：shell脚本并发" class="headerlink" title="延伸扩展：shell脚本并发"></a>延伸扩展：shell脚本并发</h2><h2 id="脚本同步系统时间"><a href="#脚本同步系统时间" class="headerlink" title="脚本同步系统时间"></a>脚本同步系统时间</h2><p>① 具体需求<br>写一个脚本，30秒同步一次系统时间，时间同步服务器192.168.0.139<br>如果同步失败，则进行邮件报警,每次失败都报警<br>如果同步成功,也进行邮件通知,但是成功100次才通知一次</p>
+<blockquote>
+<p>1.死循环<br>2.同步命令 ntpdate 192.168.0.1<br>3.同步成功计数，条件到达100报警<br>#!/bin/env bash<br>    i=0<br>    while true<br>    do<br>    ntpdate 114.118.7.161 &amp;&gt;/dev/null<br>    if [ $? -eq 0 ] ;then<br>        let i++<br>        if [ $i -eq 100 ];then<br>            echo “system date success”| mail -s “success” root@localhost<br>            let i=0<br>    else<br>            echo “system date false”|mail -s “false” root@localhost<br>            echo “count:”$i<br>        fi<br>    fi<br>    sleep 3<br>    done</p>
+</blockquote>
+<h2 id="应用案例"><a href="#应用案例" class="headerlink" title="应用案例"></a>应用案例</h2><p>㈠ 具体需求 ##<br>使用until语句批量创建10个用户，要求stu1—stu5用户的UID分别为1001—1005；<br>stu6~stu10用户的家目录分别在/rhome/stu6—/rhome/stu10</p>
+<p>创建10个用户条件为真推出</p>
+<pre><code>#!/bin/env bash
+ls /rhome &amp;&gt;/dev/null
+if [ $? -ne  0 ];then
+    mkdir /rhome
+else
+    echo &#39;excited&#39;
+fi
+count=0
+until [ $count -gt 10 ]
+do
+    for x in &#123;1..10&#125;
+    do
+        if [ $x -ge 6 ];then
+            let count++
+               useradd -d /rhome/stu$x stu$x
+        else
+            let count++
+            useradd -u 100$x stu$x
+        fi
+    done
+done</code></pre>
 
       
     </div>
@@ -722,7 +660,7 @@ x\&#123;m,n\&#125;  # 重复字符x，至少m次，不多于n次，如：&#39;o\
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/shell%E8%AF%AD%E5%8F%A5%E5%9F%BA%E7%A1%80%E7%AF%87/index.html">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/%E5%88%86%E7%B1%BB/index.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/1122.jpg">
@@ -736,7 +674,7 @@ x\&#123;m,n\&#125;  # 重复字符x，至少m次，不多于n次，如：&#39;o\
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/shell%E8%AF%AD%E5%8F%A5%E5%9F%BA%E7%A1%80%E7%AF%87/index.html" class="post-title-link" itemprop="url">shell语句基础篇</a>
+            <a href="/%E5%88%86%E7%B1%BB/index.html" class="post-title-link" itemprop="url">分类</a>
         </h2>
 
         <div class="post-meta">
@@ -754,7 +692,7 @@ x\&#123;m,n\&#125;  # 重复字符x，至少m次，不多于n次，如：&#39;o\
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-19 21:28:50" itemprop="dateModified" datetime="2020-10-19T21:28:50+08:00">2020-10-19</time>
+                <time title="修改时间：2020-10-20 16:14:38" itemprop="dateModified" datetime="2020-10-20T16:14:38+08:00">2020-10-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1006,7 +944,7 @@ string1 != string2    判断字符串是否相不等</code></pre>
 </blockquote>
 <p>判断文件新旧：修改时间<br>-nt   1是否比2新<br>-ot   1是否比2旧<br>-ef   1和2是否是同一文件</p>
 <blockquote>
-<p>多重条件判断<br>判断符号    含义    举例<br>-a 和 &amp;&amp;    逻辑与    [ 1 -eq 1 -a 1 -ne 0 ] [ 1 -eq 1 ] &amp;&amp; [ 1 -ne 0 ]<br>-o 和 \    \        逻辑或    [ 1 -eq 1 -o 1 -ne 1 ] [ 1 -eq 1 ] \    \    [1 -ne 1]<br>特别说明：</p>
+<p>多重条件判断<br>判断符号    含义    举例<br> 和 &amp;&amp;    逻辑与    [ 1 -<br> 1 -a 1 -ne 0 ] [ 1 -eq 1 ] &amp;&amp; [ 1 -ne 0 ]<br>-o 和 \    \        逻辑或    [ 1 -eq 1 -o 1 -ne 1 ] [ 1 -eq 1 ] \    \    [1 -ne 1]<br>特别说明：</p>
 <p>&amp;&amp; 前面的表达式为真，才会执行后面的代码</p>
 <p>|| 前面的表达式为假，才会执行后面的代码</p>
 <p>; 只用于分割命令或表达式</p>
@@ -1186,7 +1124,7 @@ done</code></pre>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
