@@ -659,6 +659,133 @@ command
 command
 ...
 done</code></pre>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>expect 自动应答 tcl语言</p>
+<p>需求1：A远程登录到server上什么都不做</p>
+<pre><code>#!/usr/bin/expect
+# 开启一个程序
+spawn ssh root@10.1.1.1
+# 捕获相关内容
+expect &#123;
+&quot;(yes/no)?&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
+&quot;password:&quot; &#123; send &quot;123456\r&quot; &#125;
+&#125;
+interact   //交互
+
+脚本执行方式：
+# ./expect1.sh
+# /shell04/expect1.sh
+# expect -f expect1.sh
+
+1）定义变量
+#!/usr/bin/expect
+set ip 10.1.1.1
+set pass 123456
+set timeout 5
+spawn ssh root@$ip
+expect &#123;
+&quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
+&quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
+&#125;
+interact</code></pre>
+<p>2）使用位置参数</p>
+<pre><code># #!/usr/bin/expect
+set ip [ lindex $argv 0 ]
+set pass [ lindex $argv 1 ]
+set timeout 5
+spawn ssh root@$ip
+expect &#123;
+&quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
+&quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
+&#125;
+interact #</code></pre>
+<p>需求2：A远程登录到server上操作</p>
+<pre><code>#!/usr/bin/expect
+set ip 10.1.1.1
+set pass 123456
+set timeout 5
+spawn ssh root@$ip
+expect &#123;
+&quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
+&quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
+&#125;
+
+expect &quot;#&quot;
+send &quot;rm -rf /tmp/*\r&quot;
+send &quot;touch /tmp/file&#123;1..3&#125;\r&quot;
+send &quot;date\r&quot;
+send &quot;exit\r&quot;
+expect eof</code></pre>
+<p>需求3：shell脚本和expect结合使用，在多台服务器上创建1个用户</p>
+<pre><code>[root@server shell04]# cat ip.txt 
+10.1.1.1 123456
+10.1.1.2 123456</code></pre>
+<ol>
+<li>循环  useradd username</li>
+<li>登录远程主机——&gt;ssh——&gt;从ip.txt文件里获取IP和密码分别赋值给两个变量</li>
+<li>使用expect程序来解决交互问题</li>
+</ol>
+<blockquote>
+<pre><code> #!/bin/bash
+ # 循环在指定的服务器上创建用户和文件
+ while read ip pass
+ do
+ /usr/bin/expect &lt;&lt;-END &amp;&gt;/dev/null
+ spawn ssh root@$ip
+ expect &#123;
+ &quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
+ &quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
+ &#125;
+ expect &quot;#&quot; &#123; send &quot;useradd yy1;rm -rf /tmp/*;exit\r&quot; &#125;
+ expect eof
+ END
+ echo &quot;$ip服务器用户创建完毕&quot;
+ done &lt; ip.txt</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>    #!/bin/env bash
+cat ip.txt|while read ip pass
+do
+&#123;
+
+/usr/bin/expect &lt;&lt;-HOU
+spawn ssh root@$ip
+expect &#123;
+&quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
+&quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
+&#125;
+expect &quot;#&quot;
+send &quot;hostname\r&quot;
+send &quot;exit\r&quot;
+expect eof
+HOU
+
+&#125;&amp;
+done
+wait
+echo &quot;user is ok....&quot;</code></pre>
+</blockquote>
+<p>或者</p>
+<pre><code>#!/bin/bash
+while read ip pass
+do
+&#123;
+
+/usr/bin/expect &lt;&lt;-HOU
+spawn ssh root@$ip
+expect &#123;
+&quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
+&quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
+&#125;
+expect &quot;#&quot;
+send &quot;hostname\r&quot;
+send &quot;exit\r&quot;
+expect eof
+HOU
+
+&#125;&amp;
+done&lt;ip.txt
+wait
+echo &quot;user is ok....&quot;</code></pre>
 ]]></content>
       <categories>
         <category>shell语句基础篇</category>
