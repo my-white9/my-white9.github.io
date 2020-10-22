@@ -1,6 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title></title>
+    <url>//index.html</url>
+    <content><![CDATA[<h1 id="awk-sed-find实战"><a href="#awk-sed-find实战" class="headerlink" title="awk+sed+find实战"></a>awk+sed+find实战</h1><p>##sed r w<br>w命令 </p>
+<pre><code># sed &#39;/root/w 2.txt&#39; /etc/passwd </code></pre>
+<p>将匹配到的包含root的行另存为2.txt文件 </p>
+<h2 id="sed实战"><a href="#sed实战" class="headerlink" title="sed实战"></a>sed实战</h2><blockquote>
+<p>将任意数字替换成空或者制表符</p>
+</blockquote>
+<pre><code>sed -r &#39;s/[0-9]/\t/gp&#39; a.txt </code></pre>
+<blockquote>
+<p>匹配root关键字替换成hello itcast，并保存到test.txt文件中<br><code>sed -r -n &#39;s/root/hello itcast/gp&#39; &gt; test.txt</code> </p>
+</blockquote>
+<p>去掉文件1-5行中的数字、冒号、斜杠</p>
+<pre><code>sed -r -e -n 1,5s/[0-9]//gp a.txt</code></pre>
+<blockquote>
+<p>删除vsftpd.conf、smb.conf、main.cf配置文件里所有注释的行及空行（不要直接修改原文件）</p>
+</blockquote>
+<pre><code>sed  &#39;/^#/d;/^$/d&#39; vsftpd.conf</code></pre>
+<blockquote>
+<p>使用sed命令截取自己的ip地址</p>
+</blockquote>
+<p><code>sed -nr &#39;/[0-9]&#123;1,3&#125;.&#123;3&#125;[0-9]&#123;1,3&#125;/p&#39; 1.tx</code>t </p>
+<blockquote>
+<p>使用sed命令一次性截取ip地址、广播地址、子网掩码</p>
+</blockquote>
+<pre><code>ifconfig ens33 |sed -n &#39;2p&#39; |sed -n &#39;s/inet//pg&#39;|sed -n &#39;s/netmask//gp&#39;|sed -n &#39;s/broadcast//gp&#39; </code></pre>
+<blockquote>
+<p>注释掉文件的2-3行和匹配到以root开头或者以ftp开头的行</p>
+</blockquote>
+<pre><code>sed -nr &#39;2,3s/^/#&amp;/p;s/^ROOT|^ftp/#&amp;/p&#39; 1.txt</code></pre>
+<p>awk<br>    从第一行开始匹配到以lp开头行<br>    awk -F: ‘NR==1,/^lp/{print $0 }’ passwd<br>    从第一行到第5行<br>    awk -F: ‘NR==1,NR==5{print $0 }’ passwd<br>    从以lp开头的行匹配到第10行<br>    awk -F: ‘/^lp/,NR==10{print $0 }’ passwd<br>    从以root开头的行匹配到以lp开头的行<br>    awk -F: ‘/^root/,/^lp/{print $0}’ passwd<br>    打印以root开头或者以lp开头的行<br>    awk -F: ‘/^root/ || /^lp/{print $0}’ passwd<br>    awk -F: ‘/^root/;/^lp/{print $0}’ passwd<br>    显示5-10行<br>    awk -F’:’ ‘NR&gt;=5 &amp;&amp; NR&lt;=10 {print $0}’ /etc/passwd<br>    awk -F: ‘NR&lt;10 &amp;&amp; NR&gt;5 {print $0}’ passwd</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>//index.html</url>
+    <content><![CDATA[<p>基础知识和基础命令<br>基础目录</p>
+<blockquote>
+<pre><code>root  系统用户家目录
+home  普通用户家目录
+etc    配置文件
+dev     设备文件 用于挂载
+boot    启动文件
+bin     用户命令文件
+sbin    超级用户命令文件
+var     实体文件(存放日志)
+usr     第三方软件文件
+tmp     临时文件
+lib     库文件</code></pre>
+</blockquote>
+<pre><code>运行级别
+&gt; 0-6
+&gt; 0  关机 runlevel0.target   
+&gt; 1  单用户超级用户不联网   runlevel0.target 
+&gt; 2  多用户模式不联网  runlevel0.target 
+&gt; 3   服务器模式无图形化runlevel0.target 
+&gt; 4保留定制runlevel0.target 
+&gt; 5    图形化模式 runlevel0.target 
+&gt; 6    重新启动   runlevel0.target 
+
+在/usr/lib/systemd/system中
+
+基础命令:
+
+常忘命令，其他的查看百度：
+rm -f 强制删除文件
+    -rf 强制删除
+    -d 删除目录
+
+cp   【参数】 源地址 现有地址
+    常用： -a=-dpR
+      -d 创建一个新的快捷方式
+      -R 递归处理
+      -p 自动满足创建创建文件的条件
+      -i 复制之前询问是否要覆盖
+      -s 建立个符号链接相当于快捷方式
+
+vim 常用的快捷方式
+    gg到文件第一行
+    G到文件最后一行
+    5G到指定的一行
+    0到行首
+    $到行尾
+    ctrl + b 向上滚动一屏
+    ctrl + f 向下滚动一屏
+    A行尾插入
+    参考:https://so.html5.qq.com/page/real/search_news?docid=70000021_4945f48d83c14014
+
+bash常用快捷方式
+    ctrl + a 移至行首
+    ctrl + e 移至行尾
+    ctrl + k 删除到行尾
+    ctrl + f 删除到行首
+    alt +f   向右移到单词的末尾
+    alt +b   想做移动到一个单词的首部</code></pre>
+]]></content>
+  </entry>
+  <entry>
     <title>正则表达式+文件处理</title>
     <url>/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86/index.html</url>
     <content><![CDATA[<h1 id="正则表达式-文件处理"><a href="#正则表达式-文件处理" class="headerlink" title="正则表达式+文件处理"></a>正则表达式+文件处理</h1><h2 id="case语句"><a href="#case语句" class="headerlink" title="case语句"></a>case语句</h2><blockquote>
@@ -242,7 +340,14 @@ x\&#123;m,n\&#125;  # 重复字符x，至少m次，不多于n次，如：&#39;o\
     <title>语句脚本实战</title>
     <url>/%E8%AF%AD%E5%8F%A5%E8%84%9A%E6%9C%AC%E5%AE%9E%E6%88%98/index.html</url>
     <content><![CDATA[<p>if语句</p>
-<h2 id="判断一个服务是否正常"><a href="#判断一个服务是否正常" class="headerlink" title="判断一个服务是否正常"></a>判断一个服务是否正常</h2><p>#!/bin/env bash<br>    read -p service service<br>    systemctl status $service |grep running &amp;&gt; /dev/null<br>    if [ $? -eq 0 ];then<br>        echo “$service excited”<br>    else<br>        echo “$service not excited”<br>    fi</p>
+<h2 id="判断一个服务是否正常"><a href="#判断一个服务是否正常" class="headerlink" title="判断一个服务是否正常"></a>判断一个服务是否正常</h2><pre><code>#!/bin/env bash
+read -p service service
+systemctl status $service |grep running &amp;&gt; /dev/null
+if [ $? -eq 0 ];then
+    echo &quot;$service excited&quot; 
+else
+    echo &quot;$service not excited&quot;
+fi</code></pre>
 <h2 id="判断用户是否存在"><a href="#判断用户是否存在" class="headerlink" title="判断用户是否存在"></a>判断用户是否存在</h2><pre><code>#!/bin/env bash
 #Name: user excited
 
@@ -300,8 +405,25 @@ fi
 done</code></pre>
 <h2 id="延伸扩展：shell脚本并发"><a href="#延伸扩展：shell脚本并发" class="headerlink" title="延伸扩展：shell脚本并发"></a>延伸扩展：shell脚本并发</h2><h2 id="脚本同步系统时间"><a href="#脚本同步系统时间" class="headerlink" title="脚本同步系统时间"></a>脚本同步系统时间</h2><p>① 具体需求<br>写一个脚本，30秒同步一次系统时间，时间同步服务器192.168.0.139<br>如果同步失败，则进行邮件报警,每次失败都报警<br>如果同步成功,也进行邮件通知,但是成功100次才通知一次</p>
 <blockquote>
-<p>1.死循环<br>2.同步命令 ntpdate 192.168.0.1<br>3.同步成功计数，条件到达100报警<br>#!/bin/env bash<br>    i=0<br>    while true<br>    do<br>    ntpdate 114.118.7.161 &amp;&gt;/dev/null<br>    if [ $? -eq 0 ] ;then<br>        let i++<br>        if [ $i -eq 100 ];then<br>            echo “system date success”| mail -s “success” root@localhost<br>            let i=0<br>    else<br>            echo “system date false”|mail -s “false” root@localhost<br>            echo “count:”$i<br>        fi<br>    fi<br>    sleep 3<br>    done</p>
+<p>1.死循环<br>2.同步命令 ntpdate 192.168.0.1<br>3.同步成功计数，条件到达100报警</p>
 </blockquote>
+<pre><code>#!/bin/env bash
+i=0
+while true
+do
+ntpdate 114.118.7.161 &amp;&gt;/dev/null
+if [ $? -eq 0 ] ;then
+    let i++
+    if [ $i -eq 100 ];then
+        echo &quot;system date success&quot;| mail -s &quot;success&quot; root@localhost
+        let i=0
+else
+        echo &quot;system date false&quot;|mail -s &quot;false&quot; root@localhost
+        echo &quot;count:&quot;$i
+    fi
+fi
+sleep 3
+done</code></pre>
 <h2 id="应用案例"><a href="#应用案例" class="headerlink" title="应用案例"></a>应用案例</h2><p>㈠ 具体需求 ##<br>使用until语句批量创建10个用户，要求stu1—stu5用户的UID分别为1001—1005；<br>stu6~stu10用户的家目录分别在/rhome/stu6—/rhome/stu10</p>
 <p>创建10个用户条件为真推出</p>
 <pre><code>#!/bin/env bash
@@ -325,14 +447,120 @@ do
         fi
     done
 done</code></pre>
+<p>判断/tmp/run目录是否存在，如果不存在就建立，如果存在就删除目录里所有文件</p>
+<pre><code>#！/bin/env bash
+if [ -d /tmp/run ];then
+    rm -rf /tmp/run
+else
+    mkdir -p /tmp/run</code></pre>
+<p>输入一个路径，判断路径是否存在，而且输出是文件还是目录，如果是链接文件，还得输出是 有效的连接还是无效的连接</p>
+<pre><code>#!/bin/env bash
+read -p dir dir
+if [ -e $dir ];then
+    if [ -d $dir ];then
+        echo $dir
+    else
+        if [ -f $dir ];then
+            echo &quot;yes it is document&quot;   
+        else
+            echo “not document”
+            if [ -S $dir ];then
+                echo &quot;effective&quot;
+            else
+                echo &quot;not effective&quot;
+            fi
+        fi
+    fi
+fi</code></pre>
+<p>交互模式要求输入一个ip，然后脚本判断这个IP 对应的主机是否 能ping 通，输出结果类似于： Server 10.1.1.20 is Down! 最后要求把结果邮件到本地管理员root@localhost mail01@localhost</p>
+<pre><code>#!/bin/env bash
+read -p ip ip
+ping -c1 $ip &amp;&gt;/dev/null
+if [ $? -eq 0 ] ;then
+    echo &quot;Server $x is Down!&quot;
+    echo &quot;Server $x is Down!&quot;|mail -s &quot;success&quot; root@localhost
+    echo &quot;Server $x is Down!&quot;|mail -s &quot;success&quot; mail01@localhost
+else
+    echo &quot;it is defect&quot;
+fi</code></pre>
+<p>写一个脚本/home/program，要求当给脚本输入参数hello时，脚本返回world,给脚本输入参数world时，脚本返回hello。而脚本没有参数或者参数错误时，屏幕上输出“usage:/home/program hello or world”</p>
+<pre><code>#!/bin/env bash
+read -p &quot;please put in&quot; input
+hello=hello
+world=world
+if [ $input == $hello ];then
+    echo &quot;world&quot;
+elif [ $input == $world ];then
+    echo &quot; hello &quot;
+else
+    echo &quot;usage:/home/program hello or world&quot;
+fi</code></pre>
+<p>写一个脚本自动搭建nfs服务</p>
+<blockquote>
+<p>1.先判断有没有nfs服务是否安装</p>
+</blockquote>
+<blockquote>
+<p>2.rpcbind服务是否安装</p>
+</blockquote>
+<blockquote>
+<p>3.判断双方网络是否通畅</p>
+</blockquote>
+<blockquote>
+<p>4.关闭selinux以及防火墙</p>
+</blockquote>
+<blockquote>
+<p>5.创建和发布共享目录</p>
+</blockquote>
+<blockquote>
+<p>6.开机启动以及启动服务</p>
+</blockquote>
+<pre><code>#!/bin/env bash
+rpm -qa|grep nfs-util &amp;&gt;/dev/null
+
+if [ $? -eq 0 ] ;then
+    echo &quot;nfs installed&quot;
+else
+    yum install nfs-util* -y
+    echo &quot;===============
+             install&quot;
+fi
+rpm -qa|grep rpcbind &amp;&gt;/dev/null
+if [ $? -eq 0 ] ;then
+    echo &quot;rpmbind installed&quot;
+else
+    yum install rpcbind* -y
+    echo &quot;===============
+             install&quot;
+fi
+read -p ip ip
+ping -c1 $ip &amp;&gt;/dev/null
+if [ $? -eq 0 ];then
+    echo &quot;ok&quot;
+else
+    echo &quot;please change your ip&quot;
+fi
+setenforce 0 &gt;/dev/null &amp;&amp; echo &quot;selinux closed&quot;
+systemctl stop firewall /dev/null &amp;&amp; echo &quot;firewwalld has closed&quot;
+read -p &quot;please input dir&quot; dir
+mkdir -p $dir
+chmod 777 $dir
+read -p &quot;ip:&quot; ip
+read -p &quot;rw/ro:&quot; fal
+cat &gt;&gt;/etc/export &lt;&lt; end
+$dir $ip($fal)
+end
+
+systemctl restart rpcbind
+systemctl restart nfs
+echo &quot;ok&quot;</code></pre>
 ]]></content>
       <categories>
         <category>shell语句基础篇</category>
       </categories>
   </entry>
   <entry>
-    <title>基础知识</title>
-    <url>/%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/index.html</url>
+    <title>分类</title>
+    <url>/%E5%88%86%E7%B1%BB/index.html</url>
     <content><![CDATA[<h1 id="课程目标："><a href="#课程目标：" class="headerlink" title="课程目标："></a>课程目标：</h1><p>熟练使用shell变量语句<br>能够编写简单的系统工具脚本<br>熟练使用awk，grep，find<br>shell介绍：<br>1.shell是解释型语言：效率低每使用一次都要进行翻译 使用解释器/bin/sh /bin/bash<br>2.sh是链接到bash无区别<br>3.对兼容性有要求会一般使用解释型语言</p>
 <h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>shell是人机交互的一个桥梁，负责将计算机用户的输入进行翻译来控制linux内核</p>
 <h1 id="shell的种类："><a href="#shell的种类：" class="headerlink" title="shell的种类："></a>shell的种类：</h1><pre><code>[root@MissHou ~]# cat /etc/shells 
@@ -659,133 +887,6 @@ command
 command
 ...
 done</code></pre>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>expect 自动应答 tcl语言</p>
-<p>需求1：A远程登录到server上什么都不做</p>
-<pre><code>#!/usr/bin/expect
-# 开启一个程序
-spawn ssh root@10.1.1.1
-# 捕获相关内容
-expect &#123;
-&quot;(yes/no)?&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
-&quot;password:&quot; &#123; send &quot;123456\r&quot; &#125;
-&#125;
-interact   //交互
-
-脚本执行方式：
-# ./expect1.sh
-# /shell04/expect1.sh
-# expect -f expect1.sh
-
-1）定义变量
-#!/usr/bin/expect
-set ip 10.1.1.1
-set pass 123456
-set timeout 5
-spawn ssh root@$ip
-expect &#123;
-&quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
-&quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
-&#125;
-interact</code></pre>
-<p>2）使用位置参数</p>
-<pre><code># #!/usr/bin/expect
-set ip [ lindex $argv 0 ]
-set pass [ lindex $argv 1 ]
-set timeout 5
-spawn ssh root@$ip
-expect &#123;
-&quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
-&quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
-&#125;
-interact #</code></pre>
-<p>需求2：A远程登录到server上操作</p>
-<pre><code>#!/usr/bin/expect
-set ip 10.1.1.1
-set pass 123456
-set timeout 5
-spawn ssh root@$ip
-expect &#123;
-&quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
-&quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
-&#125;
-
-expect &quot;#&quot;
-send &quot;rm -rf /tmp/*\r&quot;
-send &quot;touch /tmp/file&#123;1..3&#125;\r&quot;
-send &quot;date\r&quot;
-send &quot;exit\r&quot;
-expect eof</code></pre>
-<p>需求3：shell脚本和expect结合使用，在多台服务器上创建1个用户</p>
-<pre><code>[root@server shell04]# cat ip.txt 
-10.1.1.1 123456
-10.1.1.2 123456</code></pre>
-<ol>
-<li>循环  useradd username</li>
-<li>登录远程主机——&gt;ssh——&gt;从ip.txt文件里获取IP和密码分别赋值给两个变量</li>
-<li>使用expect程序来解决交互问题</li>
-</ol>
-<blockquote>
-<pre><code> #!/bin/bash
- # 循环在指定的服务器上创建用户和文件
- while read ip pass
- do
- /usr/bin/expect &lt;&lt;-END &amp;&gt;/dev/null
- spawn ssh root@$ip
- expect &#123;
- &quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
- &quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
- &#125;
- expect &quot;#&quot; &#123; send &quot;useradd yy1;rm -rf /tmp/*;exit\r&quot; &#125;
- expect eof
- END
- echo &quot;$ip服务器用户创建完毕&quot;
- done &lt; ip.txt</code></pre>
-</blockquote>
-<blockquote>
-<pre><code>    #!/bin/env bash
-cat ip.txt|while read ip pass
-do
-&#123;
-
-/usr/bin/expect &lt;&lt;-HOU
-spawn ssh root@$ip
-expect &#123;
-&quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
-&quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
-&#125;
-expect &quot;#&quot;
-send &quot;hostname\r&quot;
-send &quot;exit\r&quot;
-expect eof
-HOU
-
-&#125;&amp;
-done
-wait
-echo &quot;user is ok....&quot;</code></pre>
-</blockquote>
-<p>或者</p>
-<pre><code>#!/bin/bash
-while read ip pass
-do
-&#123;
-
-/usr/bin/expect &lt;&lt;-HOU
-spawn ssh root@$ip
-expect &#123;
-&quot;yes/no&quot; &#123; send &quot;yes\r&quot;;exp_continue &#125;
-&quot;password:&quot; &#123; send &quot;$pass\r&quot; &#125;
-&#125;
-expect &quot;#&quot;
-send &quot;hostname\r&quot;
-send &quot;exit\r&quot;
-expect eof
-HOU
-
-&#125;&amp;
-done&lt;ip.txt
-wait
-echo &quot;user is ok....&quot;</code></pre>
 ]]></content>
       <categories>
         <category>shell语句基础篇</category>
